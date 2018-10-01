@@ -64,3 +64,6 @@
 如何进行文件合并：
 1. 使用在线网站进行文件合并
 2. 使用 nodejs 实现文件合并
+
+#### 在线压缩工具
+- tool.oschina.net/jacompress
