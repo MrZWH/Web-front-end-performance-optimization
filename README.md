@@ -177,3 +177,35 @@ https://tinypng.com
 - 图片等静态资源在使用之前的提前请求
 - 资源使用到时能从缓存中加载，提升用户体验
 - 页面展示的依赖关系维护
+
+### 懒加载原生 js 和 zepto.lazyload
+需要去监听 scroll 事件，在 scroll 事件的回调中去判断我们懒加载的图片是否进入可视区域。
+```js
+// 获取可视区域的高度
+var viewHeight = document.documentElement.clientHeight
+
+function lazyload() {
+	var eles = document.querySelectorAll('img[data-original][lazyload]')
+	Array.prototype.forEach.call(else, function(item, index) {
+		var rect
+		if (item.dataset.original === '') return
+		rect = item.getBoundingClientRect()
+
+		if (rect.bottom >= 0 && rect.top < viewHeight) {
+			!function() {
+				var img = new Image()
+				img.src = item.dataset.original
+				img.onload = function() {
+					item.src = img.src
+				}
+				item.removeAttribute('data-original')
+				item.removeAttribute('lazyload')
+			}()
+		}
+		})
+}
+
+lazyload()
+
+document.addEventListener('scroll', lazyload)
+```
