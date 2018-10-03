@@ -117,3 +117,11 @@ https://tinypng.com
 图片转换网站：zhitu.isux.us
 在图片小于8kb的时候做一个构建工具inline 的选择
 雪碧图：www.spritecow.com
+
+## css 和 js 的装载与执行
+- 理解浏览器端 html、css、js 的加载过程
+- 结合 chrome 的能力学习和掌握 css、js 加载过程中的优化点
+- 通过案例分析和实战演练深入理解学习的优化点
+
+### HTML 页面加载渲染的过程
+![](./images/html_xuanran.PNG)
