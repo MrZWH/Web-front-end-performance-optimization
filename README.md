@@ -209,3 +209,5 @@ lazyload()
 
 document.addEventListener('scroll', lazyload)
 ```
+
+### 预加载原生 js 和 PreloadJS 实现
