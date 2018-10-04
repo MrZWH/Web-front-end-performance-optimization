@@ -211,3 +211,11 @@ document.addEventListener('scroll', lazyload)
 ```
 
 ### 预加载原生 js 和 PreloadJS 实现
+
+## 重绘与回流
+- 理解浏览器重绘与回流的机制
+- 对于一些经典案例进行分析
+- 重绘与回流的案例实战
+
+### css 性能会让 js 变慢吗？
+频繁触发**重绘**与**回流**，会导致UI 频繁渲染，最终导致js 变慢
