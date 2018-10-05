@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用 translate 替代 top 改变</title>
+</head>
+<style>
+	/*#rect {
+		position: relative;
+		top: 0;
+		width: 100px;
+		height: 100px;
+		background: blue;
+	}*/
+
+	#rect {
+		transform: translateY(0);
+		width: 100px;
+		height: 100px;
+		background: blue;
+	}
+</style>
+<body>
+	<div id="rect"></div>
+	<script type="text/javascript">
+		setTimeout(() => {
+			// document.getElementById('rect').style.top = '100px';
+			document.getElementById('rect').style.transform = 'translateY(100px)';
+		}, 2000)
+	</script>
+</body>
+</html>

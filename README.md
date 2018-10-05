@@ -229,3 +229,91 @@ document.addEventListener('scroll', lazyload)
 
 #### 重绘
 - 当 render tree 中的一些元素需要更新属性，而这些属性只是影响元素的外观、风格而不会影响布局，比如 background-color，则成为重绘
+
+### 触发页面重布局的属性
+- 盒子模型相关属性会触发重布局
+  - width height padding margin display border-width border min-height
+- 定位属性及浮动也会触发重布局
+  - top bottom left right position float clear
+- 改变节点内部文字结构也会触发重布局
+  - text-align overflow-y font-weight overflow font-family line-height vertival-align white-space font-size
+
+#### 只触发重绘的属性
+- color border-style border-radius visibility text-decoration background background-image background-position background-repeat background-size
+outline-color outline outline-style outline-width box-shadow
+
+#### 新建 DOM 的过程
+1. 获取 dom 后分割为多个图层
+2. 对每个图层的节点计算样式结果（Recalculate style--样式重计算)
+3. 为每个节点生成图形和位置（Layout--回流和重布局）
+4. 将每个节点绘制填充到图层位图中（Paint Setup 和 Paint--重绘）
+5. 图层作为纹理上传至 GPU
+6. 符合多个图层到页面上生成最终屏幕图象（Composite Layers--图层重组）
+
+将频繁重绘回流的 DOM 元素单独作为一个独立图层，那么这个 DOM 元素的重绘与回流的影响只会在这个图层中。
+
+#### 如何将 DOM 元素变成新的独立图层？
+Chrome 创建图层的条件
+- 3D 或透视变换 css 属性（perspective transform）
+- 使用加速视频解码的 `<video>` 节点
+- 拥有 3D（WebGL）上下文或加速的 2D 上下文的 canvas 节点
+- 混合插件（如 Flash）
+- 对自己的 opacity 做 css 动画或使用一个动画 webkit 变换的元素
+- 拥有加速 css 过滤器的元素
+- 元素有一个包含复合层的后代节点（一个元素拥有一个子元素，该子元素在自己的图层里）
+- 元素有一个  z-index 较低且包含一个复合层的兄弟元素（换句话说就是该元素在复合层上面渲染）
+
+避免使用触发重绘回流的 css 属性
+将重绘、回流的影响范围限制在单独的图层之内
+
+### 实战优化点
+- 用 translate 替代 top 改变
+- 用opacity 替代 visibility
+- 不要一条一条地修改 DOM 的样式，预先定义好 class，然后修改 DOM 的 className
+- 把 DOM 离线后修改，比如：先把 DOM 给 display：none（有一次reflow）然后你修改一百次然后再把它显示出来
+- 不要把 DOM 结点的属性值放在一个循环里当成循环里的变量
+- 不要适用 table 布局，可能很小的一个改动会造成整个 table 的重新布局
+- 动画实现的速度的选择
+- 对于动画新建图层
+- 启用 GPU 硬件加速
+
+## 浏览器存储
+- 理解 localstorage、cookie、session storage、indexdb的概念和使用
+- 学习理解 pwa 和 service worker 的应用
+- 案例分析和实战
+
+### cookie
+因为 HTTP 请求无状态，所以需要 cookie 去维持客户端状态。
+
+cookie 的生成方式：
+- http response header 中的 set-cookie
+- js 中可以通过 document.cookie 去读写 cookie
+
+1. 用于浏览器和服务端的交互
+2. 客户端自身的数据存储
+
+过期时间 expire
+
+#### cookie存储的限制
+- 作为浏览器存储，大小4kb左右
+- 需要设置过期时间 expire
+
+cdn 域名要和主站域名分开
+
+### local storage
+- HTML5 设计出来专门用于浏览器存储
+- 大小为5M左右
+- 仅在客户端使用，不和服务端进行通信
+- 接口封装较好
+- 浏览器本地缓存方案
+
+### session storage
+- 会话级别的浏览器存储
+- 大小为 5M 左右
+- 仅在客户端使用，不和服务端进行通信
+- 接口封装较好
+- 用于表单信息的维护
+
+### IndexedDB
+- IndexedDB 是一种低级API，用于客户端存储大量结构化数据。该 API 使用索引来实现对该数据的高性能搜索。虽然webstorage对于存储叫少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。IndexedDB 提供了一个解决方案。
+- 为应用创建离线版本
