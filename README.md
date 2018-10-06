@@ -336,3 +336,7 @@ cdn 域名要和主站域名分开
 
 #### service worker 生命周期
 ![](./images/service_worker.PNG)
+
+### chrome 中检查浏览器中启动的 serviceworker以及内置的
+- chrome://serviveworker-internals/
+- chrome://inspect/#service-workers

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		function openDB(name, callback) {
+			var request = window.indexedDB.open(name)
+			request.onerror = function(e) {
+				console.log('open indexedDB error')
+			}
+
+			request.onsuccess = function(e) {
+				myDB.db = e.target.result
+				callback && callback()
+			}
+
+			// from no database to first version, first version to second version ...
+			request.onupgradeneeded = function () {
+				// body...
+				var store = myDB.db.createObjectStore('books', {
+					keyPath: 'isbn'
+				})
+				var titleIndex = store.createIndex('by_title', 'title', {
+					unique: true
+				})
+				var authorIndex = store.createIndex('by_author', 'author')
+
+				store.put({
+					title: 'Query Memory',
+					author: 'Mary',
+					isbn: 123121
+				})
+
+				store.put({
+					title: 'Water flow',
+					author: 'Mary',
+					isbn: 123151
+				})
+
+				store.put({
+					title: 'Query Memory',
+					author: 'Jack',
+					isbn: 1232241
+				})
+			}
+		}
+		var myDB = {
+			name: 'testDB',
+			version: '1',
+			db: null
+		}
+
+		function addData(db, storeName) {
+			// object store
+			var transaction = db.transaction('books', 'readwrite')
+			var store = transaction.obejctStore('books')
+			// 获取当前indexdb 中的数据
+			// var request = store.get(1232241)
+			// request.onsuccess = function (e) {
+			// 	console.log(e.target.result)
+			// }
+
+			// 添加信息到 indexdb 中
+			// store.add({
+			// 	title: 'Flowers',
+			// 	author: 'Quan',
+			// 	isbn: 222
+			// })
+
+			// store.delete(222)
+
+			store.get(222).onsuccess = function (e) {
+				books = e.target.result
+				console.log(books)
+				books.author = 'James'
+				var request = store.put(books)
+				request.onsuccess = function () {
+					console.log('update success')
+				}
+			}
+		}
+
+		openDB(myDB.name, function() {
+			// 关闭indexdb
+			// myDB.db.close()
+			// 删除indexdb
+			// window.indexedDB.deleteDatabase(myDB.db)
+
+			// 往indexdb 中添加数据
+		})
+
+		// ObejctStore 不同于数据库的表
+
+		setTimeout(function () {
+			addData(myDB.db)
+		}, 2000)
+	</script>
+</body>
+</html>
