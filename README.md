@@ -340,3 +340,36 @@ cdn 域名要和主站域名分开
 ### chrome 中检查浏览器中启动的 serviceworker以及内置的
 - chrome://serviveworker-internals/
 - chrome://inspect/#service-workers
+
+## 缓存优化
+- 理解 cache-control 所控制的缓存策略
+- 学习理解 last-modified 和 etag 以及整个服务端浏览器端的缓存流程
+- 案例分析和实战，基于 node 实践上述缓存方式
+
+### cache-control
+- max-age
+- s-maxage
+- private
+- public
+- no-cache
+- no-store
+
+### expires
+- 缓存过期时间，用来指定资源到期的时间，是服务器端的具体时间点
+- 告诉浏览器在过期时间前，浏览器可以直接从缓存里取数据，而无需再次请求
+
+### Last-Modified/If-Modified-Since
+- 基于客户端和服务端协商的缓存机制
+- last-modified —— response header
+- if-modified-since —— request header
+- 需要与 cache-control 共同使用
+
+#### Last-Modified 有什么缺点
+- 某些服务器不能够获取精确的修改时间
+- 文件修改时间变了，但文件内容却没有变
+
+### ETag/If-None-Match
+- 文件内容的 hash 值
+
+### 分级缓存策略
+![](./fenjihuancuncelue.PNG)
