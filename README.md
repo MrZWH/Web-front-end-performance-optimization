@@ -373,3 +373,15 @@ cdn 域名要和主站域名分开
 
 ### 分级缓存策略
 ![](./fenjihuancuncelue.PNG)
+
+## SSR 服务端渲染
+- vue 渲染面临的问题时什么？
+
+### 多层次的优化方案
+- 构建层模板编译
+- 数据无关的 prerender 的方式
+- 服务端渲染
+
+### Server Side Rendering
+with streaming support + component caching
+![](./images/ssr.PNG)
