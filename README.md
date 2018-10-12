@@ -1,4 +1,4 @@
-# Web-front-end-performance-optimization
+# Web前端性能优化
 剖析web前端性能优化原理，分析当前大公司在性能优化上所做的实践。
 
 ### 浏览器的一个请求从发送到返回都经历了什么？
